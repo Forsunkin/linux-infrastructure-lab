@@ -1,67 +1,67 @@
 # Linux Infrastructure LAB
 
-A personal, production-inspired infrastructure laboratory for hands-on Linux administration, virtualization, networking, and infrastructure automation.
+Личная инфраструктурная лаборатория для практического изучения администрирования Linux, виртуализации, сетей и автоматизации. Проект строится на физическом оборудовании и виртуальных машинах с ориентацией на воспроизводимые инженерные решения.
 
-> **Project status:** Early development. This repository distinguishes verified lab work from planned changes. It is a personal lab, not a production environment or a commercial deployment.
+> **Статус проекта:** начальная стадия. Реализованные компоненты отделены от планируемых. Лаборатория не является промышленной инфраструктурой или коммерческим проектом.
 
-## Objectives
+## Цели
 
-- Build and operate a reproducible Linux infrastructure using physical hardware and virtual machines.
-- Practice secure remote administration, networking, deployment, monitoring, and recovery.
-- Document configuration decisions, validation procedures, and troubleshooting results.
-- Demonstrate practical systems engineering skills through working configurations and testable outcomes.
+- Построить и документировать воспроизводимую инфраструктуру на Linux.
+- Освоить безопасное удалённое администрирование, развёртывание сервисов, мониторинг и восстановление.
+- Фиксировать инженерные решения, проверку работоспособности и устранение неисправностей.
+- Подтверждать навыки работающими конфигурациями, скриптами и результатами тестирования.
 
-## Infrastructure inventory
+## Оборудование и текущее состояние
 
-| Component | Hardware / software | Current status |
+| Компонент | Оборудование и ПО | Статус |
 | --- | --- | --- |
-| Primary server | IBM System x3650 M4; 2 × Xeon E5-2650L v2; 128 GB RAM; 4 × SAS HDD (RAID 10); Ubuntu Server 24.04 LTS | **Offline** — relocation, networking, and unattended operation pending |
-| Management / test node | Lenovo ThinkCentre M70q; Ubuntu Server 24.04 LTS; ~8 GB RAM | **Lab use** — KVM/QEMU and libvirt installed; two Ubuntu Server test VMs created |
-| Network gateway | MikroTik RouterOS | **Configured** — LAN routing and WireGuard remote-access setup |
-| Virtualization | KVM/QEMU, libvirt, QCOW2, VirtIO | **Practiced** on the Lenovo node |
+| Основной сервер | IBM System x3650 M4; 2 × Xeon E5-2650L v2; 128 ГБ ОЗУ; 4 × SAS HDD (RAID 10); Ubuntu Server 24.04 LTS | **Выключен** — предстоят перевозка, подключение к сети и подготовка к автономной работе |
+| Управляющий и тестовый узел | Lenovo ThinkCentre M70q; Ubuntu Server 24.04 LTS; около 8 ГБ ОЗУ | **Использовался для практики** — установлены KVM/QEMU и libvirt, созданы две учебные VM с Ubuntu Server |
+| Сетевой шлюз | MikroTik RouterOS | **Настроен** — локальная маршрутизация и WireGuard |
+| Виртуализация | KVM/QEMU, libvirt, QCOW2, VirtIO | **Изучено на практике** на Lenovo |
 
-Hardware specifications and historical configuration notes describe equipment already used in the lab; they do not imply that every device is currently online or remotely accessible.
+Указание выполненных ранее настроек не означает, что все устройства доступны по сети в настоящее время.
 
-## Architecture: current and planned
+## Архитектура
 
-The existing primary LAN uses `10.100.100.0/24`, with MikroTik acting as the gateway. WireGuard is configured for remote administration. Additional server and VM subnets are **design proposals**, not yet verified as deployed.
+Основная локальная сеть — `10.100.100.0/24`, шлюзом выступает MikroTik. WireGuard настроен для удалённого доступа. Отдельные серверные подсети и сети виртуальных машин пока находятся на стадии проектирования.
 
 ```mermaid
 flowchart TD
-    Admin[Remote administrator] -->|WireGuard| Router[MikroTik router]
-    Router --> LAN[LAN: 10.100.100.0/24]
-    LAN --> Lenovo[Lenovo M70q: Ubuntu + KVM/libvirt]
-    Lenovo --> VM1[Ubuntu VM 01]
-    Lenovo --> VM2[Ubuntu VM 02]
-    LAN -.->|Planned reconnect| IBM[IBM x3650 M4: currently offline]
+    Admin["Удалённый администратор"] -->|WireGuard| Router["Маршрутизатор MikroTik"]
+    Router --> LAN["Локальная сеть: 10.100.100.0/24"]
+    LAN --> Lenovo["Lenovo M70q: Ubuntu, KVM/libvirt"]
+    Lenovo --> VM1["Ubuntu VM 01"]
+    Lenovo --> VM2["Ubuntu VM 02"]
+    LAN -.->|Подключение запланировано| IBM["IBM x3650 M4: выключен"]
 ```
 
-The diagram is conceptual and does not assert that all hosts are currently reachable. Public IP addresses, access credentials, and private key material are intentionally excluded.
+Схема отражает общую архитектуру и не гарантирует текущую доступность каждого узла. Публичные адреса, учётные данные и секретные ключи намеренно не публикуются.
 
-## Roadmap
+## План работ
 
-| Phase | Deliverable | Status |
+| Этап | Результат | Статус |
 | --- | --- | --- |
-| 1. Documentation baseline | Inventory, architecture, implementation status, and safety rules | In progress |
-| 2. Remote-capable server | Relocate and reconnect IBM; validate startup, SSH access, and recovery options | Planned |
-| 3. Linux operations | Reproducible health checks, service administration, and backup/restore tests | Planned |
-| 4. Application stack | Docker Compose, Nginx, and PostgreSQL with documented verification | Planned |
-| 5. Automation | Ansible-managed configuration | Planned |
-| 6. Observability and delivery | Monitoring and a basic CI workflow | Planned |
+| 1. Базовая документация | Состав оборудования, архитектура, статусы компонентов и правила безопасности | В работе |
+| 2. Удалённо управляемый сервер | Перевозка и подключение IBM, проверка запуска, SSH и возможностей восстановления | Запланировано |
+| 3. Эксплуатация Linux | Скрипты проверки состояния, управление службами, тесты резервного копирования и восстановления | Запланировано |
+| 4. Прикладные сервисы | Docker Compose, Nginx и PostgreSQL с проверкой развёртывания | Запланировано |
+| 5. Автоматизация | Настройка серверов с помощью Ansible | Запланировано |
+| 6. Мониторинг и CI | Мониторинг состояния инфраструктуры и базовый процесс CI | Запланировано |
 
-Kubernetes and complex clustering are intentionally out of scope for the initial portfolio.
+Kubernetes и сложные кластерные решения не входят в первоначальный объём проекта.
 
-## Validation principles
+## Принципы документации и проверки
 
-Every implemented feature should include:
+Для каждого реализованного компонента по возможности фиксируются:
 
-1. The problem and engineering decision.
-2. Prerequisites and reproducible configuration or commands.
-3. A verification procedure and observed result.
-4. Limitations, failure scenarios, and recovery notes where applicable.
+1. Задача и обоснование выбранного решения.
+2. Требования, конфигурации и команды для воспроизведения.
+3. Способ проверки и фактический результат.
+4. Ограничения, возможные неисправности и способы восстановления.
 
-**Security:** No passwords, API tokens, SSH or WireGuard private keys, unredacted device exports, or personal information will be committed. Examples will use placeholders and non-sensitive values.
+**Безопасность:** в репозиторий не добавляются пароли, токены, приватные SSH-ключи и ключи WireGuard, необработанные экспорты конфигураций и персональные данные. В примерах используются заглушки и несекретные значения.
 
-## Background
+## О проекте
 
-This repository documents **independent laboratory practice**. Professional experience in IT system administration is separate from the work demonstrated here.
+В репозитории документируется **самостоятельная лабораторная практика**. Коммерческий опыт системного администрирования не смешивается с результатами домашних экспериментов.
